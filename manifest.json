@@ -1,0 +1,24 @@
+{
+	"manifest_version": 3,
+	"name": "Y-Gaming Extension",
+	"description": "Browser extension for my personal needs.",
+	"version": "1.0",
+  "action": {},
+	"icons": {
+		"16": "images/icon-16.png",
+		"32": "images/icon-32.png",
+		"48": "images/icon-48.png",
+		"128": "images/icon-128.png"
+	},
+	"content_scripts": [
+		{
+			"matches": ["https://xplay.gg/store"],
+			"js": ["scripts/content.js"]
+		}
+	],
+	"host_permissions": ["https://steamcommunity.com/*", "https://xplay.gg/*"],
+	"background": {
+		"service_worker": "background.js"
+	},
+  "permissions": ["scripting", "tabs", "storage", "webNavigation"] 
+}
