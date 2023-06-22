@@ -1,8 +1,8 @@
 {
 	"manifest_version": 3,
 	"name": "Y-Gaming Extension",
-	"description": "Browser extension for my personal needs.",
-	"version": "1.0",
+	"description": "Browser extension for Y-Gaming.",
+	"version": "1.1",
   "action": {},
 	"icons": {
 		"16": "images/icon-16.png",
@@ -20,5 +20,5 @@
 	"background": {
 		"service_worker": "background.js"
 	},
-  "permissions": ["scripting", "tabs", "storage", "webNavigation"] 
+  "permissions": ["scripting", "webNavigation"] 
 }
