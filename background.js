@@ -15,6 +15,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 });
 
 chrome.webNavigation.onHistoryStateUpdated.addListener(function (details) {
+	console.log(details);
     if (details.url == "https://xplay.gg/store") {
         chrome.scripting.executeScript({
             target: { tabId: details.tabId },
