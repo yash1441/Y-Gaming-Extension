@@ -13,10 +13,14 @@
 	"content_scripts": [
 		{
 			"matches": ["https://xplay.gg/store"],
-			"js": ["scripts/content.js"]
+			"js": ["scripts/xplay.js"]
+		},
+		{
+			"matches": ["https://csgoempire.com/withdraw/steam/market"],
+			"js": ["scripts/empire.js"]
 		}
 	],
-	"host_permissions": ["https://steamcommunity.com/*", "https://xplay.gg/*"],
+	"host_permissions": ["https://steamcommunity.com/*", "https://xplay.gg/*", "https://csgoempire.com/*"],
 	"background": {
 		"service_worker": "background.js"
 	},
