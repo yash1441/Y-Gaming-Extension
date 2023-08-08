@@ -10,7 +10,7 @@ function appendTextToTargetDivs(rate) {
     for (const div of targetDivs) {
         if (isTargetDiv(div)) {
             if (!div.innerText.includes('(')) {
-                let coins = parseFloat(div.innerText);
+                let coins = parseFloat(div.innerText.replace(/,/g, ''));
                 div.innerText += ' (₹' + (coins * rate).toFixed(2).toString() + ')';
             }
         } else {
