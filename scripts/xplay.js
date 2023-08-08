@@ -44,7 +44,7 @@ function getElementsFromPage() {
 			checkIfPageLoaded(300);
 		} else {
 			console.warn(
-				"--- XPLAY.GG Store Enhance ---\nEither the page has taken too long to load or no skin showcases have been found. If the issue persists, please contact me on Discord: @t.r.e.a.s.u.r.e"
+				"Either the page has taken too long to load or no skin showcases have been found."
 			);
 			return;
 		}
