@@ -20,16 +20,15 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(function (details) {
 			target: { tabId: details.tabId },
 			files: ["scripts/xplay.js"],
 		});
+	} else if (details.url == "https://csgoempire.com/withdraw/steam/market") {
+		chrome.scripting.executeScript({
+			target: { tabId: details.tabId },
+			files: ["scripts/empire.js"],
+		});
 	}
-}, {
+}/*, {
 	url: [{ urlEquals: "https://xplay.gg/store" }]
-});
-
-chrome.webNavigation.onReferenceFragmentUpdated.addListener(function (details) {
-	console.log(details);
-}, {
-	url: [{ urlEquals: "https://csgoempire.com/withdraw/steam/market" }]
-});
+}*/);
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 	if (message.action === 'saveInterval') {
