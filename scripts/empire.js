@@ -33,48 +33,27 @@ async function readMatchingDivs(rate) {
 
         await checkStickers(itemElement);
 
-
         if (firstChild) {
             const coinChild = firstChild.children[1].children[0].children[0].children[0].children[1];
             if (coinChild) {
-                const content = coinChild.textContent;
-                if (!content.includes('(')) {
-                    const coins = parseFloat(content.replace(/,/g, ''));
-                    const updatedContent = content + ' (₹' + (coins * rate).toFixed(2).toString() + ')';
-                    const newText = document.createTextNode(updatedContent);
-                    coinChild.innerHTML = '';
-                    coinChild.appendChild(newText);
-                } else {
-                    const coins = parseFloat(content.replace(/,/g, '').split(" ")[1]).toFixed(2);
-                    const value = parseFloat(content.match(/\((.*?)\)/)[1].replace(/[^\d.]/g, '')).toFixed(2);
-                    if ((coins * rate).toFixed(2) != value) {
-                        const updatedContent = content + ' (₹' + (coins * rate).toFixed(2).toString() + ')';
-                        const newText = document.createTextNode(updatedContent);
-                        coinChild.innerHTML = '';
-                        coinChild.appendChild(newText);
+                const coins = parseFloat(coinChild.textContent.replace(/,/g, '')).toFixed(2);
+                const coinRate = '(₹' + (coins * rate).toFixed(2).toString() + ')';
+                const coinRateCheck = coinChild.nextElementSibling;
+
+                if (coinRateCheck && coinRateCheck.classList.contains('coinRate')) {
+                    if (coinRateCheck.innerText != coinRate) {
+                        console.log('Updated from: ' + coinRateCheck.innerText + ' to ' + coinRate);
+                        coinRateCheck.innerText = coinRate;
                     }
+                } else {
+                    const coinRateDiv = document.createElement('div');
+                    coinRateDiv.className = 'coinRate';
+                    coinRateDiv.innerText = coinRate;
+                    coinChild.insertAdjacentElement('afterend', coinRateDiv);
                 }
             }
         }
     }
-}
-
-async function getStickerValue(sticker, image) {
-    const url = 'https://steamcommunity.com/market/search/render/?query=' + encodeURI(sticker) + '&start=0&count=1&search_descriptions=0&sort_column=default&sort_dir=desc&appid=730&category_730_ItemSet[]=any&category_730_ProPlayer[]=any&category_730_StickerCapsule[]=any&category_730_TournamentTeam[]=any&category_730_Weapon[]=any&category_730_Quality[]=tag_normal&norender=1'
-
-    console.log(url);
-
-    chrome.runtime.sendMessage({ url: url }, (res) => {
-        if (!res) {
-            image.insertAdjacentText('afterend', 'F');
-            return;
-        }
-        if (res.results[0].sell_price_text) {
-            image.insertAdjacentText('afterend', res.results[0].sell_price_text);
-            console.log(res.results[0].sell_price_text);
-        }
-    });
-
 }
 
 async function checkStickers(item) {
@@ -92,30 +71,61 @@ async function checkStickers(item) {
     const stickerino = element.querySelectorAll('.stickerino');
     if (buttons.length < 2 && stickerino.length < 1) {
         let button = document.createElement("button");
-        button.type = "button";
-        button.className = "btn-secondary pop stretch flex rounded font-[500] text-dark-5";
+        button.setAttribute('type', 'button');
+        button.className = "stickerino";
         item.style.height = "auto";
-        let divi = document.createElement("div");
-        divi.className = "flex items-center";
-        divi.innerText = "Check Stickers";
-        button.appendChild(divi);
+
+        const span = document.createElement('span');
+        span.className = 'front items-center justify-center';
+
+        const divi = document.createElement('div');
+        divi.className = 'flex items-center';
+
+        const buttonTextSpan = document.createElement('span');
+        buttonTextSpan.textContent = 'Check Stickers';
+
+        divi.appendChild(buttonTextSpan);
+        span.appendChild(divi);
+        button.appendChild(span);
+
         element.appendChild(button);
+
         button.addEventListener("click", () => {
-            for (const imgElement of imgElements) {
-                const altText = imgElement.alt;
-                if (!altText.includes('undefined')) {
-                    const lastIndex = altText.lastIndexOf('-');
-                    const stickerName = altText.substring(0, lastIndex);
-                    const div = document.createElement("div");
-                    div.className = "stickerino";
-                    div.innerText = stickerName;
-                    element.appendChild(div);
-                    //await getStickerValue(stickerName, imgElement);
-                }
-            }
-            button.parentNode.removeChild(button);
+            getStickers(button, imgElements, element);
         });
     }
+}
 
-    
+async function getStickers(button, imgElements, element) {
+    for (const imgElement of imgElements) {
+        const altText = imgElement.alt;
+        if (!altText.includes('undefined')) {
+            const lastIndex = altText.lastIndexOf('-');
+            const stickerName = altText.substring(0, lastIndex);
+            const div = document.createElement("div");
+            div.className = "stickerino";
+            div.innerText = stickerName;
+            element.appendChild(div);
+            await getStickerValue(stickerName, div);
+        }
+    }
+    button.parentNode.removeChild(button);
+}
+
+async function getStickerValue(sticker, div) {
+    const url = 'https://steamcommunity.com/market/search/render/?query=' + encodeURI(sticker) + '&start=0&count=1&search_descriptions=0&sort_column=default&sort_dir=desc&appid=730&category_730_ItemSet[]=any&category_730_ProPlayer[]=any&category_730_StickerCapsule[]=any&category_730_TournamentTeam[]=any&category_730_Weapon[]=any&category_730_Quality[]=tag_normal&norender=1'
+
+    console.log(url);
+
+    chrome.runtime.sendMessage({ url: url }, (res) => {
+        if (!res) {
+            div.insertAdjacentText('afterend', 'F');
+            return;
+        }
+        if (res.results[0].sell_price_text) {
+            div.insertAdjacentText('afterend', res.results[0].sell_price_text);
+            console.log(res.results[0].sell_price_text);
+        }
+    });
+
 }
