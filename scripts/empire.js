@@ -4,12 +4,11 @@ function checkAndAppendText(rate) {
 
 checkAndAppendText();
 
-chrome.storage.local.get(['intervalValue'], function (result) {
+chrome.storage.local.get(['intervalValue', 'rateValue'], function (result) {
     const intervalInSeconds = result.intervalValue || 5;
-    chrome.storage.local.get(['rateValue'], function (result) {
-        const rate = result.rateValue || 59.5;
-        setInterval(checkAndAppendText, intervalInSeconds * 1000, rate);
-    });
+    const rate = result.rateValue || 59.5;
+
+    setInterval(checkAndAppendText, intervalInSeconds * 1000, rate);
 });
 
 function containsRequiredClassname(classname) {
@@ -105,6 +104,13 @@ async function getStickers(button, imgElements, element) {
             div.innerText = stickerName;
             element.appendChild(div);
             await getStickerValue(stickerName, div);
+        } else {
+            const lastIndex = altText.lastIndexOf('-');
+            const stickerName = altText.substring(0, lastIndex);
+            const div = document.createElement("div");
+            div.className = "stickerino";
+            div.innerText = stickerName;
+            element.appendChild(div);
         }
     }
     button.parentNode.removeChild(button);
