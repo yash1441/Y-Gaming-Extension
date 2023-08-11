@@ -64,6 +64,15 @@ async function checkStickers(item) {
     if (stickersDiv) imgElements = stickersDiv.querySelectorAll('img');
     else return;
 
+    // Check if all the elements of imgElements include undefined
+    let allUndefined = true;
+    for (const imgElement of imgElements) {
+        if (!imgElement.alt.includes('undefined')) allUndefined = false;
+    }
+
+    if (allUndefined) return;
+
+
     const buttons = element.querySelectorAll('.btn-secondary');
     const stickerino = element.querySelectorAll('.stickerino');
     if (buttons.length < 2 && stickerino.length < 1) {
@@ -104,13 +113,6 @@ async function getStickers(button, imgElements, element) {
             div.innerText = stickerName;
             element.appendChild(div);
             await getStickerValue(stickerName, div);
-        } else {
-            const lastIndex = altText.lastIndexOf('-');
-            const stickerName = altText.substring(0, lastIndex);
-            const div = document.createElement("div");
-            div.className = "stickerino";
-            div.innerText = stickerName;
-            element.appendChild(div);
         }
     }
     button.parentNode.removeChild(button);
