@@ -65,8 +65,6 @@ async function checkStickers(item) {
     if (stickersDiv) imgElements = stickersDiv.querySelectorAll('img');
     else return;
 
-    if (imgElements[0].alt.includes('undefined')) return;
-
     const buttons = element.querySelectorAll('.btn-secondary');
     const stickerino = element.querySelectorAll('.stickerino');
     if (buttons.length < 2 && stickerino.length < 1) {
