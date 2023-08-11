@@ -1,17 +1,33 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-	const apiCall = request.url;
-	fetch(apiCall, {
-		method: "GET",
-		"Content-Type": "application/json",
-	})
-		.then((response) => {
-			return response.json();
+	if (request.action === 'saveInterval') {
+		const intervalValue = parseInt(request.intervalValue, 10);
+		if (!isNaN(intervalValue) && intervalValue > 0) {
+			chrome.storage.local.set({ 'intervalValue': intervalValue }, function () {
+				return console.log('Interval value saved:', intervalValue);
+			});
+		} else return console.log('Interval value failed to saved:', intervalValue);
+	} else if (request.action === 'saveRate' && !request.url) {
+		const rateValue = parseFloat(request.rateValue);
+		if (!isNaN(rateValue) && rateValue > 0) {
+			chrome.storage.local.set({ 'rateValue': rateValue }, function () {
+				return console.log('Rate value saved:', rateValue);
+			});
+		} else return console.log('Rate value failed to saved:', rateValue);
+	} else if (request.url) {
+		const apiCall = request.url;
+		fetch(apiCall, {
+			method: "GET",
+			"Content-Type": "application/json",
 		})
-		.then((data) => {
-			sendResponse(data);
-		})
-		.catch((error) => console.error(error));
-	return true; // Will respond asynchronously.
+			.then((response) => {
+				return response.json();
+			})
+			.then((data) => {
+				sendResponse(data);
+			})
+			.catch((error) => console.error(error));
+		return true;
+	}
 });
 
 chrome.webNavigation.onHistoryStateUpdated.addListener(function (details) {
@@ -28,22 +44,4 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(function (details) {
 	}
 }/*, {
 	url: [{ urlEquals: "https://xplay.gg/store" }]
-}*/);
-
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-	if (message.action === 'saveInterval') {
-		const intervalValue = parseInt(message.intervalValue, 10);
-		if (!isNaN(intervalValue) && intervalValue > 0) {
-			chrome.storage.local.set({ 'intervalValue': intervalValue }, function () {
-				console.log('Interval value saved:', intervalValue);
-			});
-		}
-	} else if (message.action === 'saveRate') {
-		const rateValue = parseFloat(message.rateValue);
-		if (!isNaN(rateValue) && rateValue > 0) {
-			chrome.storage.local.set({ 'rateValue': rateValue }, function () {
-				console.log('Rate value saved:', rateValue);
-			});
-		}
-	}
-});  
+}*/); 
