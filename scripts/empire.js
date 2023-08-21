@@ -128,7 +128,7 @@ async function getStickerValue(sticker, div) {
             div.insertAdjacentText('afterend', 'F');
             return;
         }
-        if (res.results[0].total_count == 0 || !res.results[0].success) {
+        if (res.total_count == 0) {
             div.insertAdjacentText('afterend', '-');
         } else if (res.results[0].sell_price_text) {
             div.insertAdjacentText('afterend', res.results[0].sell_price_text);
