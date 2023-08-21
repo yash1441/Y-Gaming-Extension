@@ -119,7 +119,7 @@ async function getStickers(button, imgElements, element) {
 }
 
 async function getStickerValue(sticker, div) {
-    const url = 'https://steamcommunity.com/market/search/render/?query=' + encodeURI(sticker) + '&start=0&count=1&search_descriptions=0&sort_column=default&sort_dir=desc&appid=730&category_730_ItemSet[]=any&category_730_ProPlayer[]=any&category_730_StickerCapsule[]=any&category_730_TournamentTeam[]=any&category_730_Weapon[]=any&category_730_Quality[]=tag_normal&norender=1'
+    const url = 'https://steamcommunity.com/market/search/render/?query=' + encodeURI('Sticker | ' + sticker) + '&start=0&count=1&search_descriptions=0&sort_column=default&sort_dir=desc&appid=730&category_730_ItemSet[]=any&category_730_ProPlayer[]=any&category_730_StickerCapsule[]=any&category_730_TournamentTeam[]=any&category_730_Weapon[]=any&category_730_Quality[]=tag_normal&norender=1'
 
     console.log(url);
 
