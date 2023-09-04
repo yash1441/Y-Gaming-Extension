@@ -11,7 +11,7 @@ function checkIfPageLoaded(to) {
 }
 
 function getElementsFromPage() {
-    let retries = 0;
+	let retries = 0;
 	let eles = [];
 	try {
 		// All elements that are skin showcases or at least pretend to be
@@ -85,10 +85,10 @@ function getElementsFromPage() {
 		if (item.innerText === "Showcase is empty") continue;
 		// Replace showcases that are probably ads
 		/* if(children.length <= 3){
-                item.innerHTML = "<p style='text-align:center'>This ad was hidden by<br>XPLAY.GG Store Enhance</p>";
-                item.style.borderBottom = "none";
-                continue;
-            } */
+				item.innerHTML = "<p style='text-align:center'>This ad was hidden by<br>XPLAY.GG Store Enhance</p>";
+				item.style.borderBottom = "none";
+				continue;
+			} */
 
 		// Check if skin is StatTrak
 		if (children[1].firstChild.innerText.includes("StatTrak")) {
@@ -172,6 +172,11 @@ function getElementsFromPage() {
 					searchString +
 					"&start=0&count=1&search_descriptions=0&sort_column=default&sort_dir=desc&appid=730&category_730_ItemSet[]=any&category_730_ProPlayer[]=any&category_730_StickerCapsule[]=any&category_730_TournamentTeam[]=any&category_730_Weapon[]=any&category_730_Quality[]=" +
 					stTag +
+					"&norender=1";
+
+				if (searchString.includes('Souvenir')) url = "https://steamcommunity.com/market/search/render/?query=" +
+					searchString +
+					"&start=0&count=1&search_descriptions=0&sort_column=default&sort_dir=desc&appid=730&category_730_ItemSet[]=any&category_730_ProPlayer[]=any&category_730_StickerCapsule[]=any&category_730_TournamentTeam[]=any&category_730_Weapon[]=any" +
 					"&norender=1";
 
 				// Send request to Steam
