@@ -94,8 +94,12 @@ function getElementsFromPage() {
 		if (children[1].firstChild.innerText.includes("StatTrak")) {
 			item.setAttribute("st", true);
 			children[1].firstChild.style.color = "orangered";
+		} else if (children[1].firstChild.innerText.includes("Souvenir")) {
+			item.setAttribute("sv", true);
+			children[1].firstChild.style.color = "gold";
 		} else {
 			item.setAttribute("st", false);
+			item.setAttribute("sv", false);
 		}
 
 		// Get xcoin price of the skin
@@ -159,6 +163,8 @@ function getElementsFromPage() {
 					} else {
 						stTag = "tag_strange";
 					}
+				} else if (item.getAttribute("sv") === "true") {
+					stTag = "tag_tournament";
 				} else {
 					if (searchString.toLowerCase().includes("%e2%98%85")) {
 						stTag = "tag_unusual";
@@ -172,11 +178,6 @@ function getElementsFromPage() {
 					searchString +
 					"&start=0&count=1&search_descriptions=0&sort_column=default&sort_dir=desc&appid=730&category_730_ItemSet[]=any&category_730_ProPlayer[]=any&category_730_StickerCapsule[]=any&category_730_TournamentTeam[]=any&category_730_Weapon[]=any&category_730_Quality[]=" +
 					stTag +
-					"&norender=1";
-
-				if (searchString.includes('Souvenir')) url = "https://steamcommunity.com/market/search/render/?query=" +
-					searchString +
-					"&start=0&count=1&search_descriptions=0&sort_column=default&sort_dir=desc&appid=730&category_730_ItemSet[]=any&category_730_ProPlayer[]=any&category_730_StickerCapsule[]=any&category_730_TournamentTeam[]=any&category_730_Weapon[]=any" +
 					"&norender=1";
 
 				// Send request to Steam
